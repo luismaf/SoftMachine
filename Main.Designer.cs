@@ -107,7 +107,7 @@
             this.txtDB.Name = "txtDB";
             this.txtDB.Size = new System.Drawing.Size(114, 20);
             this.txtDB.TabIndex = 9;
-            this.txtDB.Text = "";
+            this.txtDB.Text = "docdigital";
             // 
             // label5
             // 
@@ -355,9 +355,10 @@
             // 
             // txtCode
             // 
-            this.txtCode.BackColor = System.Drawing.Color.Black;
+            this.txtCode.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.txtCode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtCode.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCode.ForeColor = System.Drawing.SystemColors.WindowText;
             this.txtCode.Location = new System.Drawing.Point(2, 15);
             this.txtCode.Margin = new System.Windows.Forms.Padding(2);
             this.txtCode.Multiline = true;
@@ -384,6 +385,7 @@
             // 
             // txtSP
             // 
+            this.txtSP.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.txtSP.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSP.Location = new System.Drawing.Point(6, 19);
             this.txtSP.Multiline = true;

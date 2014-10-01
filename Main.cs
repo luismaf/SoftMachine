@@ -15,7 +15,7 @@ namespace SoftMachine
         #region Incialize
 
         //Instanciamos las Clases:
-        Entities.Tables oTables = new Entities.Tables();
+        Business.Entities.Tables oTables = new Business.Entities.Tables();
 
         public Main()
         {
@@ -42,20 +42,24 @@ namespace SoftMachine
 
                 //Obtenemos información de cada tabla:
                 DataTable dtInfo = new DataTable();
-                query = string.Format("explain `{0}`", dbName); //string query = string.Format("SELECT COLUMN_NAME, DATA_TYPE, COLUMN_KEY, EXTRA FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='{0}' AND TABLE_NAME='{1} ORDER BY TABLE_NAME; `{0}`", DataBase, tableName);
+                query = string.Format("explain `{0}`", dbName); //string query = string.Format("SELECT COLUMN_NAME, DATA_TYPE, COLUMN_KEY, EXTRA FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=\"{0}\" AND TABLE_NAME=\"{1} ORDER BY TABLE_NAME; `{0}`", DataBase, tableName);
                 Utilities.Connection.QueryDB(dtInfo, query, database);
                 //Obtenemos la información de cada Row
 
                 //Instanciamos cada tabla [ y llenamos el objeto]:
-                Entities.Table oTable = new Entities.Table(dbName);
+                Business.Entities.Table oTable = new Business.Entities.Table(dbName);
 
                 for (int z = 0; z < dtInfo.Rows.Count; z++)
                 {
-                    Entities.Row oRow = new Entities.Row(oTable);
+                    Business.Entities.Row oRow = new Business.Entities.Row(oTable);
                     oRow.dbName = dtInfo.Rows[z]["Field"].ToString();
                     oRow.dbType = dtInfo.Rows[z]["Type"].ToString().ToUpperInvariant();
-                    oRow.dbKey = dtInfo.Rows[z]["Key"].ToString().ToUpperInvariant();
-                    oRow.dbExtra = dtInfo.Rows[z]["Extra"].ToString().ToLowerInvariant();
+                    //get if it's a PK:
+                    oRow.isPK = (dtInfo.Rows[z]["Key"].ToString().ToUpperInvariant().Equals("PRI")) ? true : false;
+                    //get if it's Autoincremental:
+                    oRow.isAutoIncremental = (dtInfo.Rows[z]["Extra"].ToString().ToLowerInvariant().Equals("auto_increment")) ? true : false;
+                    //oRow.dbKey = dtInfo.Rows[z]["Key"].ToString().ToUpperInvariant();
+                    //oRow.dbExtra = dtInfo.Rows[z]["Extra"].ToString().ToLowerInvariant();
                     oTable.Rows.Add(oRow);
                 }
                 //Agregamos cada tabla a la colección:
@@ -76,11 +80,11 @@ namespace SoftMachine
             oTables.GenerateMethods(ref sbMethods, ref sbStoredProcedures, DatabaseName, clbTables.SelectedItems);
             //oTables.FormatBusinessEntityLayer(ref sbEntities, DatabaseName);
             oTables.FormatBusinessLogicLayer(ref sbEntities, DatabaseName);
-            txtSP.Text = "";
-            txtCode.Text = "";
+            txtSP.Text = string.Empty;
+            txtCode.Text = string.Empty;
             txtSP.AppendText(sbStoredProcedures.ToString());
-            //txtCode.AppendText(sbMethods.ToString());
-            txtCode.AppendText(sbEntities.ToString());
+            txtCode.AppendText(sbMethods.ToString());
+            //txtCode.AppendText(sbBusiness.Entities.ToString());
         }
         #endregion
 
@@ -198,7 +202,7 @@ namespace SoftMachine
 
             if (txtDB.Text.Equals(""))
             {
-                MessageBox.Show("DatabaseName name is required", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Database Name name is required", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtDB.Focus();
                 return false;
             }

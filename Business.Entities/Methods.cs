@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SoftMachine.Entities
+namespace SoftMachine.Business.Entities
 {
     public class Methods: List<Method>
     {
         #region Methods
         public void FormatMethods(ref StringBuilder sb)
         {
-            foreach (Entities.Method oMethod in this.ToList())
+            foreach (Business.Entities.Method oMethod in this.ToList())
             {
                 //oMethod.Prepare();
-                sb.AppendLine(string.Format("\t\tpublic {0} {1} ({2})", oMethod.MethodReturnType, oMethod.vsName, oMethod.MethodParametersDefinition));
+                sb.AppendLine(string.Format("\t\tpublic {0} {1} ({2})", oMethod.MethodReturnType, oMethod.vsName, oMethod.Parameters.Definition));
                 sb.AppendLine("\t\t{");
                 sb.AppendLine("\t\t\t//Instanciamos la conexión");
-                sb.AppendLine("\t\t\tMySqlConnection oConnection = Data.DatabaseName.Adapter.newConnection();");
+                sb.AppendLine("\t\t\tMySqlConnection oConnection = Data.Database.Adapter.newConnection();");
                 sb.AppendLine("\t\t\tDataSet result = new DataSet();");
                 sb.AppendLine("\t\t\t//try");
                 sb.AppendLine("\t\t\t//{");
@@ -37,22 +37,25 @@ namespace SoftMachine.Entities
                 sb.AppendLine("");
                 sb.AppendLine("\t\t\t\t\t//establecemos el nombre del stored procedure:");
                 //establecemos el nombre del stored procedure
-                sb.AppendLine(string.Format("\t\t\t\t\toCommand.CommandText = '{0}';", oMethod.dbName));
+                sb.AppendLine(string.Format("\t\t\t\t\toCommand.CommandText = \"{0}\";", oMethod.dbName));
                 /////////////////////////////////////
                 ////asignamos parámetros:
                 sb.AppendLine("\t\t\t\t\t//asignamos parámetros:");
-                sb.AppendLine(oMethod.MethodInParametersLines); //oCommand.Parameters.AddWithValue('@_id', Id);");
+                sb.AppendLine(oMethod.InParameters.InLines); //oCommand.Parameters.AddWithValue(\"@_id\", Id);");
                 sb.AppendLine("");
                 /////////////////////////////////////
                 //Instanciamos la coleccion de {ENTIDAD}s"); ENTIDAD= convertToVarName(Table.dbName)
                 sb.AppendLine(string.Format("\t\t\t\t\t //Instanciamos la coleccion de {0}s", oMethod.Table.vsName));
-                sb.AppendLine(string.Format("\t\t\t\t\t Entities.{0}s o{0}s = new Entities.{0}s();", oMethod.Table.vsName));
+                sb.AppendLine(string.Format("\t\t\t\t\t Business.Entities.{0}s o{0}s = new Business.Entities.{0}s();", oMethod.Table.vsName));
                 sb.AppendLine("");
                 //verificar si hay parametros de salida:
                 if (oMethod.OutParameters.Count == 0) //if (oMethod.OutParameters == null)
                 {   //ExecuteNonQuery
                     sb.AppendLine("\t\t\t\t\t//Ejecutamos el oCommand, (no devuelve nada");
-                    sb.AppendLine("\t\t\t\t\t//oCommand.ExecuteNonQuery();" + Environment.NewLine + Environment.NewLine);
+                    sb.AppendLine("\t\t\t\t\t oCommand.ExecuteNonQuery();");
+                    sb.AppendLine("\t\t\t\t }");
+                    sb.AppendLine("\t\t\t }");
+                    sb.AppendLine("\t\t }");
                 }
                 else
                 {
@@ -77,11 +80,11 @@ namespace SoftMachine.Entities
                     sb.AppendLine(string.Format("\t\t\t\t\t\t\t //Instanciamos el objeto o{0} (entidad: {0}) y las colecciones que contenga", oMethod.Table.vsName));
                     /////////////////////////////////////
                     //Instanciamos al objeto ENTIDAD
-                    sb.AppendLine(string.Format("\t\t\t\t\t\t\t Entities.{0} o{0} = new Entities.{0}();", oMethod.Table.vsName));
+                    sb.AppendLine(string.Format("\t\t\t\t\t\t\t Business.Entities.{0} o{0} = new Business.Entities.{0}();", oMethod.Table.vsName));
                     sb.AppendLine("");
 
                     //cargamos los Parametros de salida:
-                    sb.AppendLine(oMethod.MethodOutParametersLines);
+                    sb.AppendLine(oMethod.InParameters.OutLines);
                     sb.AppendLine();
                     sb.AppendLine(string.Format("\t\t\t\t\t\t\t //Agregamos el objeto {0} a la coleccion de {0}s", oMethod.Table.vsName));
                     sb.AppendLine(string.Format("\t\t\t\t\t\t\t o{0}s.Add(o{0});", oMethod.Table.vsName));
@@ -95,12 +98,12 @@ namespace SoftMachine.Entities
                     sb.AppendLine("\t\t\t /*}");
                     sb.AppendLine("\t\t\t catch (MySqlException exc)");
                     sb.AppendLine("\t\t\t {");
-                    sb.AppendLine("\t\t\t\t Utilities.Log.Save('Error de MySQL', exc.Message); //capturamos el error de MySQL");
+                    sb.AppendLine("\t\t\t\t Utilities.Log.Save(\"Error de MySQL\", exc.Message); //capturamos el error de MySQL");
                     sb.AppendLine("\t\t\t\t return null;");
                     sb.AppendLine("\t\t\t }");
                     sb.AppendLine("\t\t\t catch (Exception e)");
                     sb.AppendLine("\t\t\t {");
-                    sb.AppendLine("\t\t\t\t Utilities.Log.Save('Error General', e.Message); //capturamos cualquier error (distinto al anterior).");
+                    sb.AppendLine("\t\t\t\t Utilities.Log.Save(\"Error General\", e.Message); //capturamos cualquier error (distinto al anterior).");
                     sb.AppendLine("\t\t\t\t return null;");
                     sb.AppendLine("\t\t\t }");
                     sb.AppendLine("\t\t\t finally");
@@ -113,7 +116,7 @@ namespace SoftMachine.Entities
         }
         public void FormatStoredProcedures(ref StringBuilder sb, string DatabaseName)
         {
-            foreach (Entities.Method oMethod in this.ToList())
+            foreach (Business.Entities.Method oMethod in this.ToList())
             {
                 sb.AppendLine(string.Format(" USE {0};", DatabaseName));
                 sb.AppendLine(Environment.NewLine);
@@ -121,54 +124,53 @@ namespace SoftMachine.Entities
                 sb.AppendLine(" DELIMITER ; ");
                 sb.AppendLine(string.Format("DROP procedure IF EXISTS `{0}`;", oMethod.dbName));
                 sb.AppendLine(" DELIMITER $$ ");
-                sb.AppendLine(string.Format("CREATE PROCEDURE `{0}`.`{1}` ({2})", DatabaseName, oMethod.dbName, oMethod.spParameters));
+                sb.AppendLine(string.Format("CREATE PROCEDURE `{0}`.`{1}` ({2})", DatabaseName, oMethod.dbName, oMethod.Parameters.spIn));
 
                 sb.AppendLine(" BEGIN ");
-                if (oMethod.Type == Entities.Method.Types.List)
+                if (oMethod.Type == Business.Entities.Method.Types.List)
                 {
                     if (oMethod.isForeign)
                     {
-                        sb.AppendLine("\tSELECT\t" + oMethod.spColumns);
+                        sb.AppendLine("\tSELECT\t" + oMethod.Parameters.spList);
                         sb.AppendLine("\tFROM\t" + "`" + oMethod.Table.dbName + "`");
-                        sb.AppendLine("\tWHERE\t" + oMethod.spWhere + ";");
+                        sb.AppendLine("\tWHERE\t" + oMethod.Parameters.spWhere + ";");
                     }
                     else
                     {
-                        sb.AppendLine("   IF" + oMethod.spConditions + "THEN");
-                        sb.AppendLine("\tSELECT\t" + oMethod.spColumns);
+                        sb.AppendLine("   IF" + oMethod.Parameters.spConditions + "THEN");
+                        sb.AppendLine("\tSELECT\t" + oMethod.Parameters.spList);
                         sb.AppendLine();
                         sb.AppendLine("\tFROM\t" + "`" + oMethod.Table.dbName + "`" + ";");
                         sb.AppendLine();
                         sb.AppendLine("   ELSE ");
-                        sb.AppendLine("\tSELECT\t" + oMethod.spColumns);
+                        sb.AppendLine("\tSELECT\t" + oMethod.Parameters.spList);
                         sb.AppendLine();
                         sb.AppendLine("\tFROM\t" + "`" + oMethod.Table.dbName + "`");
                         sb.AppendLine();
-                        sb.AppendLine("\tWHERE\t" + oMethod.spWhere + ";");
+                        sb.AppendLine("\tWHERE\t" + oMethod.Parameters.spWhere + ";");
                         sb.AppendLine("   END IF; ");
                     }
                 }
-                else if (oMethod.Type == Entities.Method.Types.Update)
+                else if (oMethod.Type == Business.Entities.Method.Types.Update)
                 {
                     sb.AppendLine("\tINSERT INTO  " + "`" + oMethod.Table.dbName + "`" + " (");
-                    sb.AppendLine("\t\t" + oMethod.spColumns + ")");
+                    sb.AppendLine("\t\t" + oMethod.Parameters.spList + ")");
                     sb.AppendLine();
                     sb.AppendLine("\tVALUES (\t");
-                    sb.AppendLine("\t\t" + oMethod.spValues + ")");
+                    sb.AppendLine("\t\t" + oMethod.Parameters.spValues + ")");
                     sb.AppendLine();
                     sb.AppendLine("\tON DUPLICATE KEY UPDATE"); //-
-                    sb.AppendLine("\t\t" + oMethod.spOnDuplicateUpdate + ";");
+                    sb.AppendLine("\t\t" + oMethod.Parameters.spOnDuplicateUpdate + ";");
                     sb.AppendLine();
                 }
-                else if (oMethod.Type == Entities.Method.Types.Delete)
+                else if (oMethod.Type == Business.Entities.Method.Types.Delete)
                 {
                     sb.AppendLine("\tDELETE FROM  " + "`" + oMethod.Table.dbName + "`");
-                    sb.AppendLine("\tWHERE\t" + oMethod.spWhere + ";");
+                    sb.AppendLine("\tWHERE\t" + oMethod.Parameters.spWhere + ";");
                     //sb.AppendLine("\tSELECT\trow_count() as rowsAffected; ");
                 }
                 sb.AppendLine(" END $$ ");
                 sb.AppendLine(Environment.NewLine);
-
             }
         }
         #endregion

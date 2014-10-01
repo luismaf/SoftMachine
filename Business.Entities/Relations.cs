@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SoftMachine.Entities
+namespace SoftMachine.Business.Entities
 {
-    public class MethodType
+    public class Relations : List<Relation>
     {
-
     }
 }

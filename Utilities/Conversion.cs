@@ -39,12 +39,12 @@ namespace SoftMachine.Utilities
             return newName;
         }
 
-        //public static string convertToPropertyName(string columnName, string EntityName)
+        //public static string convertToPropertyName(string RowName, string EntityName)
         //{
         //    string newName = string.Empty;
         //    //string EntityName = convertTableNameToEntityName(tableName);
-        //    string[] words = columnName.Split('_');
-        //    //string[] words = columnName.ToLower().Split('_');
+        //    string[] words = RowName.Split('_');
+        //    //string[] words = RowName.ToLower().Split('_');
         //    for (int i = 0; i < words.Length; i++) //i=1 ==> won't uppercase the first word.
         //    {
         //        newName += uppercaseFirst(words[i]);
@@ -55,11 +55,11 @@ namespace SoftMachine.Utilities
         //}
 
         //to avoid name crop when there is more than one parameter. i.e.: (Id, CompanyId) -> (BranchId, CompanyId)
-        public static string convertToPropertyName(string columnName, string EntityName, bool SinglePKtable)
+        public static string convertToPropertyName(string RowName, string EntityName, bool SinglePKtable)
         {
             string newName = string.Empty;
-            string[] words = columnName.Split('_');
-            //string[] words = columnName.ToLower().Split('_');
+            string[] words = RowName.Split('_');
+            //string[] words = RowName.ToLower().Split('_');
             for (int i = 0; i < words.Length; i++) //i=1 ==> won't uppercase the first word.
             {
                 newName += uppercaseFirst(words[i]);
@@ -68,70 +68,81 @@ namespace SoftMachine.Utilities
                 newName = newName.Substring(EntityName.Length, newName.Length - EntityName.Length);
             return newName;
         }
+        ///// <summary>
+        ///// Recibe un Row Type (DB) a un  ParameterType (VS). Se utiliza para generar las entidades.
+        ///// </summary>
+        //private void convertToParameterType(Business.Entities.Row oRow)           
+        //{
+        //    string ParameterType = oRow.dbType.Split('(')[0];
+        //    //Detalles del Parámetro: tamaño/lista de enum.
+        //    //string[] ParameterSize = new string[50];
+        //    string[] ParameterDetails = new string[oRow.dbType.Replace("'", "").Trim().Split(',').Count()];
+        //    ParameterDetails = oRow.dbType.Replace("'", "").Trim().Split(','); 
+        //    switch (ParameterType)
+        //    {
+        //        case "VARCHAR":
+        //            ParameterType = "string"; //si uso toString, luego no lo puedo usar para crear la entidad.
+        //            break;
+        //        case "INT":
+        //            ParameterType = "int";
+        //            if (oRow.isAutoIncremental)
+        //                ParameterType = string.Format("Nullable<{0}>", ParameterType);
+        //            break;
+        //        case "MEDIUMINT":
+        //            ParameterType = "int";
+        //            break;
+        //        case "SMALLINT":
+        //            ParameterType = "int";
+        //            break;
+        //        case "TINYINT":
+        //            ParameterType = "int";
+        //            break;
+        //        case "DECIMAL":
+        //            ParameterType = "decimal";
+        //            break;
+        //        case "DOUBLE":
+        //            ParameterType = "decimal";
+        //            break;
+        //        case "DATE":
+        //            ParameterType = "date";//VER!
+        //            break;
+        //        case "DATETIME":
+        //            ParameterType = "datetime";//VER!
+        //            break;
+        //        case "ENUM":
+        //            ParameterType = "enum";
+        //            foreach (string ParameterDetail in ParameterDetails)
+        //            {
+        //                Business.Entities.Enumerator oParameterDetail = new Business.Entities.Enumerator(ParameterDetail);
+        //                oRow.ParameterDatails.Add(oParameterDetail);
+        //            }
+        //            break;
+        //        case "TEXT":
+        //            ParameterType = "text";
+        //            break;
+        //        case "BLOB":
+        //            ParameterType = "binary"; //VER!
+        //            break;
+        //        default:
+        //            ParameterType = "string"; //si uso toString, luego no lo puedo usar para crear la entidad.
+        //            break;
+        //    }
+        //    return ParameterType;
+        //}
+
         /// <summary>
-        /// Recibe un Column Type (DB) a un  PropertyType (VS). Se utiliza para generar las entidades.
+        /// Recibe un ParameterType (VS) y Devuelve 'To{tipo_variable}'. Es para para convertir los Parametros a VS, usando la función ConvertTo;
         /// </summary>
-        public static string convertToPropertyType(string columnType)
-        {
-            string propertyType = string.Empty;
-
-            columnType = columnType.Split('(')[0];
-
-            switch (columnType)
-            {
-                case "VARCHAR":
-                    propertyType = "string"; //si uso toString, luego no lo puedo usar para crear la entidad.
-                    break;
-                case "INT":
-                    propertyType = "int";
-                    break;
-                case "MEDIUMINT":
-                    propertyType = "int";
-                    break;
-                case "SMALLINT":
-                    propertyType = "int";
-                    break;
-                case "TINYINT":
-                    propertyType = "int";
-                    break;
-                case "DECIMAL":
-                    propertyType = "decimal";
-                    break;
-                case "DOUBLE":
-                    propertyType = "decimal";
-                    break;
-                case "DATE":
-                    propertyType = "date";//VER!
-                    break;
-                case "DATETIME":
-                    propertyType = "datetime";//VER!
-                    break;
-                case "TEXT":
-                    propertyType = "text";
-                    break;
-                case "BLOB":
-                    propertyType = "binary"; //VER!
-                    break;
-                default:
-                    propertyType = "string"; //si uso toString, luego no lo puedo usar para crear la entidad.
-                    break;
-            }
-            return propertyType;
-        }
-
-        /// <summary>
-        /// Recibe un PropertyType (VS) y Devuelve 'To{tipo_variable}'. Es para para convertir los Parametros a VS, usando la función ConvertTo;
-        /// </summary>
-        public static string convertToConversionType(string propertyType)
+        public static string convertToConversionType(string ParameterType)
         {
             string ConvertToTypeVS = string.Empty;
-            switch (propertyType)
+            switch (ParameterType)
             {
                 case "int":
                     ConvertToTypeVS = "ToInt32";
                     break;
                 default:
-                    ConvertToTypeVS = "To" + uppercaseFirst(propertyType);
+                    ConvertToTypeVS = "To" + uppercaseFirst(ParameterType);
                     break;
             }
             return ConvertToTypeVS;
