@@ -1,0 +1,173 @@
+8
+
+dir
+21
+http://mysql-queries-sp-generator.googlecode.com/svn/trunk/MySQL%20SP%20Query%20Generator/obj/x86/Release
+http://mysql-queries-sp-generator.googlecode.com/svn
+
+
+
+2011-10-03T06:24:10.660700Z
+20
+visualrange@gmail.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+d40f6386-3689-d165-4699-25af917a089b
+
+MySQL_SP_Query_Generator.Properties.Resources.resources
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+cd7dbc7abeda9893ce25793744443958
+2011-08-16T09:01:11.767951Z
+2
+visualrange@gmail.com
+has-props
+
+GenerateResource.read.1.tlog
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+eeda449f4e90eb350e49225eb5f6d863
+2011-10-03T06:24:10.660700Z
+20
+visualrange@gmail.com
+has-props
+
+ResolveAssemblyReference.cache
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+9230eaeba3ef4cb8da4ad7a97d1e94b2
+2011-08-17T11:58:43.807893Z
+8
+visualrange@gmail.com
+has-props
+
+MySQL SP Query Generator.exe
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+f5f26b6cabc2bf9b3b6291918b9c996e
+2011-10-03T06:24:10.660700Z
+20
+visualrange@gmail.com
+has-props
+
+MySQL SP Query Generator.pdb
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+cb62cd62f51c978acba9e56504e15b2e
+2011-10-03T06:24:10.660700Z
+20
+visualrange@gmail.com
+has-props
+
+TempPE
+dir
+
+MySQL SP Query Generator.csproj.FileListAbsolute.txt
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+0d34b99bf7ef6d0fada62fea6c589e58
+2011-08-17T11:53:29.833295Z
+7
+visualrange@gmail.com
+
+DesignTimeResolveAssemblyReferences.cache
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+aad995966d41077ea4cfdbfb204dc788
+2011-08-22T06:16:38.741897Z
+13
+visualrange@gmail.com
+has-props
+
+DesignTimeResolveAssemblyReferencesInput.cache
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+6b7765da85348ce9f96cad30726b26a1
+2011-08-17T11:53:29.833295Z
+7
+visualrange@gmail.com
+has-props
+
+MySQL_SP_Query_Generator.AboutBox.resources
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+5c67a34339ed73a772cc30372e78b9ee
+2011-08-22T06:16:38.741897Z
+13
+visualrange@gmail.com
+has-props
+
+GenerateResource.write.1.tlog
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+7ae14f31559f96c2aad002b7e5047273
+2011-08-17T11:53:29.833295Z
+7
+visualrange@gmail.com
+has-props
+
+MySQL_SP_Query_Generator.Main.resources
+file
+
+
+
+
+2013-10-16T23:32:46.000000Z
+cd7dbc7abeda9893ce25793744443958
+2011-08-16T09:01:11.767951Z
+2
+visualrange@gmail.com
+has-props
+

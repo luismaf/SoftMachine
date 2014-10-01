@@ -1,0 +1,10 @@
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\bin\Release\SoftMachine.exe
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\bin\Release\SoftMachine.pdb
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\bin\Release\mysql.data.dll
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\obj\x86\Release\SoftMachine.csproj.GenerateResource.Cache
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\obj\x86\Release\SoftMachine.exe
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\obj\x86\Release\SoftMachine.pdb
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\obj\x86\Release\SoftMachine.csprojResolveAssemblyReference.cache
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\obj\x86\Release\SoftMachine.AboutBox.resources
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\obj\x86\Release\SoftMachine.Main.resources
+C:\Users\luismaf\Documents\Visual Studio 2012\Projects\SoftMachine\SoftMachine\obj\x86\Release\SoftMachine.Properties.Resources.resources
